@@ -18,8 +18,12 @@ export default function Home(): JSX.Element {
     hasNextPage,
   } = useInfiniteQuery(
     'images',
-    async ({ pageParam = 0 }) => {
-      const response = await api.get(`/api/images?after=${pageParam}`)
+    async ({ pageParam = null }) => {
+      const response = await api.get(`/api/images`, {
+        params: {
+          after: pageParam
+        }
+      })
       return response.data
     }
     ,
@@ -38,6 +42,8 @@ export default function Home(): JSX.Element {
 
     return flatted;
   }, [data]);
+
+  console.log(formattedData)
 
   if(isLoading) {
     return (
